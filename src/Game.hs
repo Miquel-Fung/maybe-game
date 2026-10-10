@@ -1,16 +1,22 @@
 module Game where
 
-import Raylib.Types (Camera2D, Color, Vector2)
+import Raylib.Types (Camera2D, Color, Transform, Vector2)
 import Shape
+
+data Kinematics a = Kinematics
+  { kinematics'x :: a,
+    kinematics'dx :: a,
+    kinematics'ddx :: a
+  }
 
 data StaticEntity = StaticEntity
   { staticEntity'shape :: Shape Float,
+    staticEntity'prs :: PRS,
     staticEntity'color :: Color
   }
 
 data Entity = Entity
-  { entity'shape :: Shape Float
-  }
+  {entity'staticEntity :: StaticEntity}
 
 data Player = Player {}
 
