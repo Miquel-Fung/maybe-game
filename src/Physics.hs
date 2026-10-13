@@ -10,8 +10,8 @@ import Shape (PRS (..), Shape (..), checkCollisionShape, simplifyPRS)
 
 data Kinematics = Kinematics
   { kinematics'PRS :: PRS,
-    kinematics'VelocityPRS :: PRS,
-    kinematics'AccelerationPRS :: PRS
+    kinematics'velocityPRS :: PRS,
+    kinematics'accelerationPRS :: PRS
   }
 
 data Object = Object

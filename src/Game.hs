@@ -25,13 +25,13 @@ updateKinematics :: Kinematics -> Kinematics
 updateKinematics
   Kinematics
     { kinematics'PRS = prs,
-      kinematics'VelocityPRS = prs',
-      kinematics'AccelerationPRS = prs''
+      kinematics'velocityPRS = prs',
+      kinematics'accelerationPRS = prs''
     } =
     Kinematics
       { kinematics'PRS = (addPRS prs $ addPRS prs' prs''),
-        kinematics'VelocityPRS = addPRS prs' prs'',
-        kinematics'AccelerationPRS = PRS {prs'position = 0, prs'rotation = 0, prs'scale = 0}
+        kinematics'velocityPRS = addPRS prs' prs'',
+        kinematics'accelerationPRS = PRS {prs'position = 0, prs'rotation = 0, prs'scale = 0}
       }
 
 data Player = Player (Active (Receive Object))
@@ -105,13 +105,37 @@ defaultState window =
           { level'background = white,
             level'objects =
               V.fromList
-                [ Object
-                    { object'shape = Rect (V2 150 100),
-                      object'kinematics = Kinematics {kinematics'PRS = PRS {prs'position = V2 350 350, prs'rotation = pi / 8, prs'scale = 1.4}},
-                      object'color = blue
+                [],
+            level'activeObjects =
+              V.fromList
+                [ Active
+                    { active'object =
+                        Object
+                          { object'shape = Rect (V2 150 100),
+                            object'kinematics =
+                              Kinematics
+                                { kinematics'PRS = PRS {prs'position = V2 350 350, prs'rotation = pi / 8, prs'scale = 1.4},
+                                  kinematics'accelerationPRS = PRS {prs'position = 0, prs'rotation = pi / 60, prs'scale = 0}
+                                },
+                            object'color = blue
+                          },
+                      active'update =
+                        \Object
+                           { object'shape = shape,
+                             object'kinematics = Kinematics {kinematics'PRS = prs, kinematics'accelerationPRS = accelerationPRS},
+                             object'color = color
+                           } ->
+                            Object
+                              { object'shape = shape,
+                                object'kinematics =
+                                  Kinematics
+                                    { kinematics'PRS = addPRS prs accelerationPRS,
+                                      kinematics'accelerationPRS = accelerationPRS
+                                    },
+                                object'color = color
+                              }
                     }
                 ],
-            level'activeObjects = V.fromList [],
             level'receiveObjects =
               V.fromList
                 [ Receive
@@ -121,7 +145,7 @@ defaultState window =
                             object'kinematics =
                               Kinematics
                                 { kinematics'PRS = PRS {prs'position = V2 300 300, prs'rotation = 0, prs'scale = 2},
-                                  kinematics'AccelerationPRS = PRS {prs'position = 0, prs'rotation = pi / 120, prs'scale = 0}
+                                  kinematics'accelerationPRS = PRS {prs'position = 0, prs'rotation = pi / 120, prs'scale = 0}
                                 },
                             object'color = green
                           },
@@ -132,7 +156,7 @@ defaultState window =
                              object'kinematics =
                                Kinematics
                                  { kinematics'PRS = prs,
-                                   kinematics'AccelerationPRS = acceleration
+                                   kinematics'accelerationPRS = acceleration
                                  },
                              object'color = color
                            } ->
@@ -141,7 +165,7 @@ defaultState window =
                                 object'kinematics =
                                   Kinematics
                                     { kinematics'PRS = addPRS prs acceleration,
-                                      kinematics'AccelerationPRS = acceleration
+                                      kinematics'accelerationPRS = acceleration
                                     },
                                 object'color = if (color /= red) then red else green
                               }
