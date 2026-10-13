@@ -58,13 +58,3 @@ updateReceiveObjects receiveObjects objects =
   V.map
     (\obj -> V.foldr updateReceive obj $ findCollisionObjects (receive'object obj) objects)
     receiveObjects
-
-checkCollisionAABB :: Rectangle -> Rectangle -> Bool
-checkCollisionAABB = checkCollisionRecs
-
-aabbShape :: PRS -> Shape Float -> Rectangle
-aabbShape
-  (PRS {prs'position = V2 x y, prs'scale = scale})
-  shape = case shape of
-    Circ radius -> Rectangle x y (radius * scale) (radius * scale)
-    Rect (V2 w h) -> Rectangle x y (w * scale) (h * scale)

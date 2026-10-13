@@ -106,8 +106,8 @@ defaultState window =
             level'objects =
               V.fromList
                 [ Object
-                    { object'shape = Circ 100,
-                      object'kinematics = Kinematics {kinematics'PRS = PRS {prs'position = V2 380 380, prs'rotation = 0, prs'scale = 1}},
+                    { object'shape = Rect (V2 150 100),
+                      object'kinematics = Kinematics {kinematics'PRS = PRS {prs'position = V2 350 350, prs'rotation = pi / 8, prs'scale = 1.4}},
                       object'color = blue
                     }
                 ],
@@ -120,7 +120,7 @@ defaultState window =
                           { object'shape = Rect (V2 80 40),
                             object'kinematics =
                               Kinematics
-                                { kinematics'PRS = PRS {prs'position = V2 300 300, prs'rotation = 0, prs'scale = 1},
+                                { kinematics'PRS = PRS {prs'position = V2 300 300, prs'rotation = 0, prs'scale = 2},
                                   kinematics'AccelerationPRS = PRS {prs'position = 0, prs'rotation = pi / 120, prs'scale = 0}
                                 },
                             object'color = green
